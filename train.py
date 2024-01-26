@@ -89,9 +89,24 @@ def main():
       pin_memory,
   )
   scaler = torch.cuda.amp.GradScaler()
+
   for epoch in range(epochs):
     train_fn(train_loader,model,optimizer,loss_fn,scaler)
 
+   #모델 저장
+    checkpoint = {
+        'state_dict':model.state_dict(),
+        'optimizer':optimizer.state_dict(),
+    }
+    save_checkpoint(checkpoint)
+
+    #정확도 측정
+    check_accuracy(val_loader,model,device=device)
+
+    #폴더에 저장
+    save_predictions_as_imgs(
+        val_loader,model,filename='saved_images/',device=device
+    )
 if __name__ == "__main__":
   main()
 
