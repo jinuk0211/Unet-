@@ -1,1 +1,2 @@
 # Unet-
+Downsample->bottleneck->upsample
